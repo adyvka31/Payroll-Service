@@ -59,7 +59,7 @@
                   {{ $data->tanggal }}
               </td>
               <td class="px-6 py-4">
-                {{ \Carbon\Carbon::parse($data->created_at)->format('H:i:s') }}
+                {{ \Carbon\Carbon::parse($data->jam_masuk)->format('H:i:s') }}
               </td>
               <td class="px-6 py-4">
                 {{ $data->jam_keluar ? \Carbon\Carbon::parse($data->jam_keluar)->format('H:i:s') : '-' }}

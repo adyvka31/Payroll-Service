@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('karyawan_name');
             $table->date('tanggal');
-            $table->timestamp('jam_masuk');
+            $table->timestamp('jam_masuk')->nullable();
             $table->timestamp('jam_keluar')->nullable();
             $table->timestamps();
         });
