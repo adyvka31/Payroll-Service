@@ -21,8 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/datakaryawan', [AdminController::class, 'store'])->middleware(['auth', 'verified'])->name('datakaryawan.store');
     Route::get('/dataabsensi', [AdminController::class, 'absensi'])->middleware(['auth', 'verified'])->name('dataabsensi');
     Route::get('/gaji', [AdminController::class, 'gaji'])->middleware(['auth', 'verified'])->name('gaji');
-    Route::get('/gaji-tambahan', [AdminController::class, 'gajiTambahan'])->name('gaji.tambahan');
     Route::get('/cetak', [AdminController::class, 'cetak'])->middleware(['auth', 'verified'])->name('cetak');
+    Route::get('/detailcetak/{karyawan}', [AdminController::class, 'detailCetak'])->middleware(['auth', 'verified'])->name('detailcetak');
 
     // Karyawan
     Route::get('/absensi', [KaryawanController::class, 'absensi'])->middleware(['auth', 'verified'])->name('absensi');

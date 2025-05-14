@@ -17,7 +17,10 @@ class Karyawan extends Model
         'tanggal_masuk',
         'gaji',
         'gaji_tambahan',
-        'status'
+        'gaji_potongan',
+        'gaji_bersih',
+        'status',
+        'created_at'
     ];
 
     public function absensi()

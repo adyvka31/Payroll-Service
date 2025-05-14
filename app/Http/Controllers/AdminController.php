@@ -30,11 +30,13 @@ class AdminController extends Controller
     }
 
     public function gaji(Request $request)
-    {
-        $karyawan = Karyawan::all(); // Ambil semua data
-        $pengajuans = Pengajuan::latest()->get();
-        return view('admin.gaji', compact('karyawan', 'pengajuans'));
-    }
+{
+    $this->gajiTambahan(); // Hitung dan simpan gaji sebelum tampilkan
+    $karyawan = Karyawan::all();
+    $pengajuans = Pengajuan::latest()->get();
+    return view('admin.gaji', compact('karyawan', 'pengajuans'));
+}
+
 
     public function acceptPengajuan($id)
     {
@@ -58,6 +60,12 @@ class AdminController extends Controller
     {
         $karyawan = Karyawan::all(); // Ambil semua data
         return view('admin.cetak', compact('karyawan'));
+    }
+
+    public function detailCetak(Karyawan $karyawan)
+    {
+        $absensi = $karyawan->absensi()->latest('tanggal')->first();
+        return view('admin.detailcetak', compact('karyawan', 'absensi'));
     }
 
     public function store(Request $request)
@@ -132,32 +140,31 @@ class AdminController extends Controller
     }
 
     public function gajiTambahan()
-{
-    $karyawan = Karyawan::with('absensi')->get();
-    $pengajuans = Pengajuan::all();
+    {
+        $karyawan = Karyawan::with('absensi')->get();
+        $pengajuans = Pengajuan::all();
 
-    foreach ($karyawan as $kar) {
-        $absensi = Absensi::where('karyawan_name', $kar->name)
-            ->whereNotNull('jam_masuk')
-            ->whereNotNull('jam_keluar')
-            ->latest('tanggal')
-            ->first();
+        foreach ($karyawan as $kar) {
+            $absensi = Absensi::where('karyawan_name', $kar->name)
+                ->whereNotNull('jam_masuk')
+                ->whereNotNull('jam_keluar')
+                ->latest('tanggal')
+                ->first();
 
-            dd($absensi);
+            if ($absensi) {
+                $jamMasuk = Carbon::parse($absensi->jam_masuk);
+                $jamKeluar = Carbon::parse($absensi->jam_keluar);
+                $menitKerja = ceil($jamMasuk->diffInMinutes($jamKeluar));
 
-        if ($absensi) {
-            $jamMasuk = Carbon::parse($absensi->jam_masuk);
-            $jamKeluar = Carbon::parse($absensi->jam_keluar);
-            $menitKerja = $jamKeluar->diffInMinutes($jamMasuk);
-            $kar->gaji_tambahan = $menitKerja * 10000;
-        } else {
-            $kar->gaji_tambahan = 0;
+                $kar->gaji_tambahan = $menitKerja * 10000;
+                $kar->gaji_potongan = 0;
+            } else {
+                $kar->gaji_tambahan = 0;
+                $kar->gaji_potongan = 50000;
+            }
+
+            $kar->gaji_bersih = $kar->gaji + $kar->gaji_tambahan - $kar->gaji_potongan;
+            $kar->save();
         }
-
-        $kar->save();
     }
-
-    return view('gaji', compact('karyawan', 'pengajuans'));
-}
-
 }

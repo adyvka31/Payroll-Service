@@ -40,16 +40,16 @@
               {{ $kar->jabatan }}
             </td>
             <td class="px-6 py-4">
-              Rp{{ $kar->gaji }}
+              Rp{{ number_format($kar->gaji, 0, ',', '.') }}
             </td>
             <td class="px-6 py-4">
-              Rp{{ $kar->gaji_tambahan }}
+              Rp{{ number_format($kar->gaji_tambahan, 0, ',', '.') }}
             </td>
             <td class="px-6 py-4">
-              -
+              Rp{{ number_format($kar->gaji_potongan, 0, ',', '.') }}
             </td>
             <td class="px-6 py-4">
-              <a href="route('cetak')">
+              <a href="{{ route('detailcetak', $kar) }}">
                 <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 font-normal rounded-lg text-sm px-5 py-2">
                   Print
                 </button>

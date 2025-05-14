@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('jabatan');
             $table->date('tanggal_masuk');
             $table->integer('gaji');
-            $table->integer('gaji_tambahan');
+            $table->integer('gaji_tambahan')->default(0);
+            $table->integer('gaji_potongan')->default(0);
+            $table->integer('gaji_bersih')->default(0);
             $table->enum('status', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->timestamps();
         });

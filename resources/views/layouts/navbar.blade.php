@@ -21,7 +21,6 @@
           <a href="{{ route('datakaryawan') }}" class="text-sm/6 font-semibold text-gray-900">Employee Data</a>
           <a href="{{ route('dataabsensi') }}" class="text-sm/6 font-semibold text-gray-900">Absence</a>
           <a href="{{ route('gaji') }}" class="text-sm/6 font-semibold text-gray-900">Sallary</a>
-          <a href="{{ route('cetak') }}" class="text-sm/6 font-semibold text-gray-900">Print</a>
         </div>
         @elseif (auth()->user()->role === 'karyawan')
         <div class="hidden lg:flex lg:gap-x-12">
